@@ -3,4 +3,4 @@ plotly
 streamlit
 
 geopandas==0.9.0
-
+distutils 
