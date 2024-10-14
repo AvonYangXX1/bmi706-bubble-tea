@@ -1,7 +1,5 @@
 import pandas as pd
-!pip install geopandas
 import geopandas as gpd
-!pip install plotly
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
