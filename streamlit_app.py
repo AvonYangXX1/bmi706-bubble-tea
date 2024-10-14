@@ -19,7 +19,7 @@ fid_df, flu_df = load_data()
 
 
 
-# vis 3
+## vis 3
 year = st.slider('Year',min_value=flu_df['ISO_YEAR'].min(),max_value=flu_df['ISO_YEAR'].max(),value=2012)
 
 all_options_who_region = st.checkbox("Select all options for WHO Region",value=True)
