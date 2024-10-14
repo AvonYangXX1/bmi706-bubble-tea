@@ -1,6 +1,6 @@
-import altair as alt
-import pandas as pd
-import streamlit as st
+import altair as alt # type: ignore
+import pandas as pd # type: ignore
+import streamlit as st # type: ignore
 
 @st.cache_data
 def load_data():
