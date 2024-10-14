@@ -198,6 +198,36 @@ def create_choropleth(df_filtered, selected_year_week, subtype):
     fig.update_geos(showcoastlines=True, showframe=False, visible=True, projection_type="natural earth")
     return fig
 
+
+# Create a line plot with brush functionality (trend plot)
+def create_trend_plot(df, selection_type, selection_value, subtype, years):
+    df_filtered = df[df['ISO_YEAR'].isin(years)]  # Filter data by the selected years
+    if selection_type == 'Country':
+        df_filtered = df_filtered[df_filtered['COUNTRY_AREA_TERRITORY'].isin(selection_value)]
+    elif selection_type == 'Hemisphere':
+        df_filtered = df_filtered[df_filtered['HEMISPHERE'].isin(selection_value)]
+    elif selection_type == 'WHO Region':
+        df_filtered = df_filtered[df_filtered['WHOREGION'].isin(selection_value)]
+
+    # Sort by week to ensure the lines are connected sequentially
+    df_filtered = df_filtered.sort_values(by=['ISO_YEAR', 'ISO_WEEK'])
+
+    # Create the line plot
+    fig = go.Figure()
+
+    for year in years:
+        df_year = df_filtered[df_filtered['ISO_YEAR'] == year]
+        fig.add_trace(go.Scatter(x=df_year['ISO_WEEK'], y=df_year[subtype], mode='lines+markers', name=str(year)))
+
+    # Update layout
+    fig.update_layout(
+        title=f"Trend of Positive Samples for {subtype} by Week",
+        xaxis_title="Week",
+        yaxis_title="Number of Positive Samples",
+        hovermode="x unified"
+    )
+
+    return fig
 # Streamlit layout and filters
 def create_streamlit_app():
     df_fnt = load_data()
