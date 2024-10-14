@@ -33,7 +33,7 @@ else:
     who_region = container_who_region.multiselect("WHO Region",
         flu_df['WHOREGION'].dropna().unique())
 
-#influenza_a_types = ['AH1N12009','AH1','AH3','AH5']
+##influenza_a_types = ['AH1N12009','AH1','AH3','AH5']
 
 #flu_df_melted_influ_subtypes = 
 # ### P2.2 ###
