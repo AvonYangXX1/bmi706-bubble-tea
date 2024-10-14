@@ -120,7 +120,7 @@ def create_streamlit_app():
     trend_fig = create_trend_plot(df_cleaned, selection_type, selected_value, selected_subtype, list(range(selected_years[0], selected_years[1]+1)))
     st.plotly_chart(trend_fig)
 
-    # Choropleth map with a week slider for a single year
+    # Choropleth map with a week slider or a single year
     selected_year = st.slider("Select a Specific Year for the Map", min_value=1999, max_value=2024, value=2021, step=1)
     selected_week = st.slider("Select Week", min_value=1, max_value=52, value=32, step=1)
     
@@ -135,4 +135,3 @@ def create_streamlit_app():
 # Run the app
 if __name__ == "__main__":
     create_streamlit_app()
-
