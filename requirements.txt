@@ -1,7 +1,6 @@
 pandas
 plotly
-streamlit
-
+streamlit==1.39.0
 geopandas==0.9.0
 distutils 
 setuptools
