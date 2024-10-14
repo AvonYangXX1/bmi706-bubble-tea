@@ -1,5 +1,5 @@
 import pandas as pd
-#import geopandas as gpd
+import geopandas as gpd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
