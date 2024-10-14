@@ -7,7 +7,11 @@ def load_data():
     fid_df = pd.read_csv("VIW_FID.csv",low_memory=False,encoding = 'utf_8_sig')
 
     flu_df = pd.read_csv("VIW_FNT - VIW_FNT.csv",low_memory=False,encoding = 'utf_8_sig')
+
+    # drop na for some columns
     flu_df = flu_df.dropna(subset=['FLUSEASON','ISOYW'],axis=0)
+
+    # correct for the isoyw
     flu_df.loc[flu_df['ISOYW']=='MK','ISO2'] = 'MK'
     flu_df.loc[flu_df['ISOYW']=='MK','ISOYW'] = flu_df.loc[flu_df['ISOYW']=='MK','MMWRYW']
     flu_df = flu_df.astype({'ISOYW': 'float64'})
@@ -22,20 +26,51 @@ fid_df, flu_df = load_data()
 ## vis 3
 year = st.slider('Year',min_value=flu_df['ISO_YEAR'].min(),max_value=flu_df['ISO_YEAR'].max(),value=2012)
 
+region_list = flu_df['WHOREGION'].dropna().unique()
 all_options_who_region = st.checkbox("Select all options for WHO Region",value=True)
-
 container_who_region = st.container()
- 
 if all_options_who_region:
     who_region = container_who_region.multiselect("WHO Region",
-         flu_df['WHOREGION'].dropna().unique(),flu_df['WHOREGION'].dropna().unique())
+         region_list,region_list)
 else:
     who_region = container_who_region.multiselect("WHO Region",
-        flu_df['WHOREGION'].dropna().unique())
+        region_list)
 
-##influenza_a_types = ['AH1N12009','AH1','AH3','AH5']
+influenza_a_types = ['AH1N12009','AH1','AH3','AH5','AH7N9','ANOTSUBTYPED','ANOTSUBTYPABLE','AOTHER_SUBTYPE']
+influenza_b_types = ['BVIC_2DEL','BVIC_3DEL','BVIC_NODEL','BVIC_DELUNK','BYAM','BNOTDETERMINED']
+statistics = ['SPEC_PROCESSED_NB','SPEC_RECEIVED_NB','INF_A','INF_B','INF_ALL','INF_NEGATIVE']
+non_influenza_respiratory_virus_types = ['ADENO','BOCA','HUMAN_CORONA','METAPNEUMO','PARAINFLUENZA','RHINO','RSV','OTHERRESPVIRUS']
+# impute missing data:
+# 1. extract the numerical data to a new df
+# 2. a b and non influ subtypes inputed with 0
+# 3. missing in statistics: inf_a = sum(influ_a_subtypes), inf_b = sum(influ_b_subtypes), inf_all = sum(inf_a, inf_b)
+# calculations:
+# 4. calculate overall positive rate: each type of influenza/spec_processed_nb
+# 5. calculate subtype percentage in all influenza detections: each type of influenza/inf_all (or inf_a, inf_b)
 
 #flu_df_melted_influ_subtypes = 
+
+#plot: use week start date to plot
+# data['week_start'] = pd.to_datetime(data['week_start'])
+# chart = alt.Chart(data).mark_line().encode(
+#     x=alt.X(
+#         'yearweek(week_start):T',  # 使用 yearweek 提取年份
+#         title='Year',
+#         axis=alt.Axis(
+#             format='%Y',  # 仅显示年份
+#             tickCount='year',  # 每年一个刻度
+#             labelAngle=0  # 标签水平显示
+#         )
+#     ),
+#     y=alt.Y('value:Q', title='Value')
+# ).properties(
+#     width=800,
+#     height=400,
+#     title='Data Points by Year'
+# )
+
+#以上为一些可供使用的template
+#以下为上次的作业部分
 # ### P2.2 ###
 # # replace with st.radio
 # sex = st.radio('Sex',['M','F'])
